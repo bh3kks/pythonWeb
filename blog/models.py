@@ -1,3 +1,4 @@
+
 from django.db import models
 
 # Create your models here.
@@ -31,7 +32,7 @@ class Entries(models.Model):
 	# 꼬리표 - 문자형(20)
 	# 하나의 글이 여러개의 태그를 가질 수 있다 (many-to-many 관계) = ManyToManyField
 	# Tags가 TagModel이라는 클래스와 MTM관계를 갖는다
-	Comments = models.PositiveSmallIntergerField(default=0, null=True)
+	Comments = models.PositiveSmallIntegerField(default=0, null=True)
 	# 댓글 수 - 숫자형
 	# 숫자형은 IntegerField(큰숫자형), SamllIntergerField(작은숫자형) (양수만 다루려면 앞에 Positive)
 
