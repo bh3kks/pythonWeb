@@ -16,9 +16,12 @@
 
 {% endfor %}
 
+<h3><strong>
+	{% for i in range %}
+	{% if i != 0 %}
+	<a href="/blog/page/{{ i }}/">[{{ i }}]</a>
+	{% endif %}
+	{% endfor %}
+</strong></h3>
 
-{% for pg in page %}
-<div>
-	<h2><a herf="/blog/page/{{ pg }}">쪽 번호 : [{{ pg }}]</a></h2>
-</div>
-{% endfor %}
+
