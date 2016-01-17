@@ -36,6 +36,9 @@ class Entries(models.Model):
 	# 댓글 수 - 숫자형
 	# 숫자형은 IntegerField(큰숫자형), SamllIntergerField(작은숫자형) (양수만 다루려면 앞에 Positive)
 
+	class Admin:
+		pass
+
 class Comments(models.Model):
 	# 댓글 모델
 	Name = models.CharField(max_length=20, null=False)
