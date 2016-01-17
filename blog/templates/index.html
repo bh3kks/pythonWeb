@@ -1,0 +1,24 @@
+
+<h1><strong>{{ page_title }}</strong></h1>
+
+{% for entry in entries %}
+
+<div>
+	<h3><a href="/blog/entry/{{ entry.id }}">{{ entry.Title }}</a></h3>
+	<li>카테고리 : {{ entry.Category.Title }}</li>
+ 	<li>태그 : {% for tag in entry.Tags.all %}
+ 	<span>{{ tag.Title }}</span>
+	{% endfor %}
+	</li>
+	<ul><li>{{ entry.created }}</li><ul>
+	<div>{{ entry.Content }}</div>
+</div>
+
+{% endfor %}
+
+
+{% for pg in page %}
+<div>
+	<h2><a herf="/blog/page/{{ pg }}">쪽 번호 : [{{ pg }}]</a></h2>
+</div>
+{% endfor %}
