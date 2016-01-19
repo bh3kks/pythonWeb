@@ -1,0 +1,5 @@
+<p>댓글</p>
+{% for comment in comments %}
+    <li>{{ comment.Name }}님이 남긴 댓글
+    <p>{{ comment.Content }}</p></li>
+{% endfor %}

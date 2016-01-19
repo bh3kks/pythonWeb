@@ -41,6 +41,5 @@ class Comments(models.Model):
 	Name = models.CharField(max_length=20, null=False)
 	Password = models.CharField(max_length=32, null=False)
 	Content = models.TextField(max_length=500, null=False)
-	created = models.DateTimeField(auto_now_add=True, auto_now=True)
 	Entry = models.ForeignKey(Entries)
 	# 여러개의 댓글은 하나의 글을 가리킨다. (Many Comments - One Entries)

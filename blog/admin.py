@@ -5,4 +5,5 @@ from blog.models import Categories, TagModel, Entries, Comments
 admin.site.register(Categories)
 admin.site.register(TagModel)
 admin.site.register(Entries)
+admin.site.register(Comments)
 

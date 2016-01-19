@@ -43,7 +43,10 @@ def read(request, entry_id=None):
 	# 하나의 글을 보여주는 함수, entry_id를 넘겨받는다
 	page_title = '블로그 글 읽기 화면'
 
-	current_entry = Entries.objects.get(id=int(entry_id))
+	try:
+		current_entry = Entries.objects.get(id=int(entry_id))
+	except:
+		return HttpResponse('current_entry False.')
 
 	try:
 		prev_entry = current_entry.get_previous_by_created()
@@ -55,12 +58,15 @@ def read(request, entry_id=None):
 	except:
 		next_entry = None
 
+	comments = Comments.objects.filter(Entry=current_entry)
+
 
 	context = {
 		'page_title':page_title,
 		'current_entry':current_entry,
 		'prev_entry':prev_entry,
-		'next_entry':next_entry
+		'next_entry':next_entry,
+		'comments':comments
 	}
 
 	return render(request, 'read.html', context)
@@ -148,5 +154,49 @@ def add_post(request):
 	return HttpResponse('%s번 글을 제대로 써넣었습니다.' % new_entry.id)
 
 def add_comment(request):
-	pass
 	
+	# 이름 검사
+	if 'name' in request.POST:
+		if len(request.POST['name']) == 0:
+			return HttpResponse('이름을 입력하세요.')
+		else:
+			cmt_name = request.POST['name']
+	else: 
+		return HttpResponse('False in name')
+
+	# 비밀번호 검사
+	if 'password' in request.POST:
+		if len(request.POST['password']) == 0:
+			return HttpResponse('비밀번호를 입력하세요.')
+		else:
+			cmt_password = request.POST['password']
+	else: 
+		return HttpResponse('False in password')
+
+	# 내용 검사
+	if 'content' in request.POST:
+		if len(request.POST['content']) == 0:
+			return HttpResponse('내용을 입력하세요.')
+		else:
+			cmt_content = request.POST['content']
+	else: 
+		return HttpResponse('False in content')
+
+	# 댓글을 달 글 확인
+	if 'entry_id' in request.POST:
+		try:
+			entry = Entries.objects.get(id=request.POST['entry_id'])
+		except:
+			return HttpResponse('그런 글은 없지롱')
+	else:
+		return HttpResponse('False in entry_id')
+
+
+	try:
+		new_cmt = Comments(Name=cmt_name, Password=cmt_password, Content=cmt_content, Entry=entry)
+		new_cmt.save()
+		return HttpResponse('댓글 입력 완료.')
+	except:
+		return HttpResponse('False.')
+
+	return HttpResponse('False in final.')

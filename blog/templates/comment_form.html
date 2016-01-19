@@ -1,0 +1,12 @@
+<html>
+	<h1> 댓글 입력 </h1>
+	
+	<form action="/blog/add/comment/" method="post">
+	{% csrf_token %}
+		<input type="hidden" id="entry_id" name="entry_id" value="{{ current_entry.id }}" />
+		<p><label for="name">글쓴이</label><input type="text" id="name" name="name" value="" /></p>
+		<p><label for="password">비밀번호</label><input type="password" id="password" name="password" value="" /></p>
+		<p><textarea id="content" name="content"></textarea></p>
+		<p><input type="submit" value="댓글 달기" /></p>
+	</form>
+</html>
