@@ -1,33 +1,33 @@
+{% include 'header.html' %}
+{% load staticfiles %}
+	<div>
+		<h3><a href="/blog/entry/{{ current_entry.id }}">{{ current_entry.Title }}</a></h3>
+		<ul>
+			<li>카테고리 : {{ current_entry.Category.Title }}</li>
+	 		<li>태그 : {% for tag in current_entry.Tags.all %}
+	 		<span>{{ tag.Title }}</span>
+			{% endfor %}
+			</li>
+			<li>{{ current_entry.created }}</li>
+		</ul>
+		<div> 내용 : {{ current_entry.Content }}</div>
+		
+	</div>
 
-<div>
-	<h3><a href="/blog/entry/{{ current_entry.id }}">{{ current_entry.Title }}</a></h3>
+	<div>
+	{% include 'comments.html' %}
+	{% include 'comment_form.html' %}
+	</div> 
+
+
+
 	<ul>
-		<li>카테고리 : {{ current_entry.Category.Title }}</li>
- 		<li>태그 : {% for tag in current_entry.Tags.all %}
- 		<span>{{ tag.Title }}</span>
-		{% endfor %}
-		</li>
-		<li>{{ current_entry.created }}</li>
+	    {% if prev_entry %}
+	    <li><a href="/blog/entry/{{ prev_entry.id }}/">이전 글 ()</a></li>
+	    {% endif %}
+
+	    {% if next_entry %}
+	    <li><a href="/blog/entry/{{ next_entry.id }}/">다음 글 ()</a></li>
+	    {% endif %}
 	</ul>
-	<div> 내용 : {{ current_entry.Content }}</div>
-	
-</div>
-
-
-
-<div>
-{% include 'comments.html' %}
-{% include 'comment_form.html' %}
-</div> 
-
-
-
-<ul>
-    {% if prev_entry %}
-    <li><a href="/blog/entry/{{ prev_entry.id }}/">이전 글 ()</a></li>
-    {% endif %}
-
-    {% if next_entry %}
-    <li><a href="/blog/entry/{{ next_entry.id }}/">다음 글 ()</a></li>
-    {% endif %}
-</ul>
+{% include 'footer.html' %}

@@ -11,7 +11,7 @@ def index(request, page=1):
 	# 글 목록을 보여주는 함수
 	# 기본적인 request말고도 page도 인자로 넘겨받는다(기본값 = 1)
 
-	page_title = '블로그 글 목록 화면'
+	page_title = '경순이의 블로그'
 
 	# 페이지 수 계산
 	per_page = 5
@@ -235,6 +235,7 @@ def del_comment_result(request, cmt_id=1):
 		return HttpResponse('current_cmt False.')
 
 	if current_cmt.Password == cmt_password:
+		current_cmt.Entry.Comments -= 1
 		current_cmt.delete()
 		return HttpResponse('댓글 삭제 완료.')
 	else:
