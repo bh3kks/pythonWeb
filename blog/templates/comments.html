@@ -1,5 +1,11 @@
-<p>댓글</p>
+<h2> 댓글 </h2>
+{% if comments|length %}
+<ul>
 {% for comment in comments %}
-    <li>{{ comment.Name }}님이 남긴 댓글
-    <p>{{ comment.Content }}</p></li>
+    <li><p> {{ comment.Name }} : {{ comment.Content }} </p></li>
+    <h3><a href="/blog/del/comment/{{ comment.id }}/">댓글 삭제</a></h3>
 {% endfor %}
+</ul>
+{% else %}
+댓글이 없습니다.
+{% endif %}

@@ -195,8 +195,48 @@ def add_comment(request):
 	try:
 		new_cmt = Comments(Name=cmt_name, Password=cmt_password, Content=cmt_content, Entry=entry)
 		new_cmt.save()
+		entry.Comments += 1
+		entry.save()
 		return HttpResponse('댓글 입력 완료.')
 	except:
 		return HttpResponse('False.')
 
 	return HttpResponse('False in final.')
+
+
+def del_comment(request, cmt_id=1):
+
+	try:
+		current_cmt = Comments.objects.get(id=int(cmt_id))
+	except:
+		return HttpResponse('current_cmt False.')
+
+	context = {
+		'current_cmt':current_cmt
+	}
+
+	return render(request, 'del_comment.html', context)
+
+
+def del_comment_result(request, cmt_id=1):
+	# 비밀번호 검사
+	if 'password' in request.POST:
+		if len(request.POST['password']) == 0:
+			return HttpResponse('비밀번호 오류.')
+		else:
+			cmt_password = request.POST['password']
+	else: 
+		return HttpResponse('False')
+
+	# 현재 커멘트 객체 가져오기
+	try:
+		current_cmt = Comments.objects.get(id=int(cmt_id))
+	except:
+		return HttpResponse('current_cmt False.')
+
+	if current_cmt.Password == cmt_password:
+		current_cmt.delete()
+		return HttpResponse('댓글 삭제 완료.')
+	else:
+		return HttpResponse('비밀번호가 틀립니다.')
+

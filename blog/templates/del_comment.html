@@ -1,0 +1,9 @@
+<html>
+	<h2> 댓글 삭제 </h2>
+	
+	<form action="/blog/del/comment/{{ current_cmt.id }}/result/" method="post">
+	{% csrf_token %}
+		<p><label for="password">비밀번호 </label><input type="password" id="password" name="password" value=""/></p>
+		<p><input type="submit" value="확인" /></p>
+	</form>
+</html>
