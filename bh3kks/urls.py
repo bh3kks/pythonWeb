@@ -12,6 +12,11 @@ urlpatterns = patterns('',
 	# (?P<page>d+)는 (d+)를 넘겨줄 때, page라는 이름으로 넘겨주는 것!
 	url(r'^blog/entry/(?P<entry_id>\d)/$', views.read),
 	# /blog/entry/숫자 : 특정 글 하나 가져와서 출력
+	url(r'^blog/write/$', views.write_form),
+	# /blog/write/ : 블로그에 글 쓰기
+	url(r'^blog/add/post/$', views.add_post),
+	# /blog/add/post/ : 폼 내용을 전송할 주소?
+	url(r'^blog/add/comment/$', views.add_comment),
 
     url(r'^admin/', include(admin.site.urls)),
 )

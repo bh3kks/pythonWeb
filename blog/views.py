@@ -2,7 +2,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse
-from blog.models import Entries
+from blog.models import Entries, Categories, TagModel, Comments
 from django.template import Context
 
 # Create your views here.
@@ -10,9 +10,6 @@ from django.template import Context
 def index(request, page=1):
 	# 글 목록을 보여주는 함수
 	# 기본적인 request말고도 page도 인자로 넘겨받는다(기본값 = 1)
-	if isinstance(page, int) == False:
-		page = 1
-	# page가 적절한 int 값으로 들어왔는지 검사
 
 	page_title = '블로그 글 목록 화면'
 
@@ -68,3 +65,88 @@ def read(request, entry_id=None):
 
 	return render(request, 'read.html', context)
 
+def write_form(request):
+	# 글을 쓰는 화면 출력
+	page_title = '블로그 글 쓰기 화면'
+
+	categories = Categories.objects.all()
+
+	context = {
+		'page_title':page_title,
+		'categories':categories
+	}
+	return render(request, 'write.html', context)
+
+def add_post(request):
+
+	# 타이틀 검사
+	if 'title' in request.POST:
+		if len(request.POST['title']) == 0:
+			return HttpResponse('글자를 입력하세요.')
+		else:
+			entry_title = request.POST['title']
+	else: 
+		return HttpResponse('False')
+
+	# 내용 검사
+	if 'content' in request.POST:
+		if len(request.POST['content']) == 0:
+			return HttpResponse('글자를 입력하세요.')
+		else:
+			entry_content = request.POST['content']
+	else:
+		return HttpResponse('False')
+
+	# 카테고리 검사
+	if 'category' in request.POST:
+		entry_category_title = request.POST['category']
+		for category in Categories.objects.all():
+			if category.Title == entry_category_title:
+				entry_category = category
+	else:
+		return HttpResponse('False')
+
+	# 태그 검사
+	if 'tags' in request.POST:
+		tags = map(lambda str: str.strip(), request.POST['tags'].split(','))
+		# tags = []
+		# split_tags = unicode(request.POST['tags']).split(',')
+		# for tag in split_tags:
+		#  	 tag_list.append(tag.strip())
+		# tags에 깔끔하게 잘라진 tag의 리스트가 저장된다.
+		tag_list = []
+		for tag in tags:
+		    tag_list.append(TagModel.objects.get_or_create(Title=tag)[0])
+		# tag_list에 튜플 자료형 중 obj만 추가한다.
+
+	else:
+		tag_list = []
+
+	# 새로 만든 글을 DB에 저장 - 1차 저장
+	new_entry = Entries(Title=entry_title, Content=entry_content, Category=entry_category)
+	# new_entry = Entries()
+ 	# new_entry.Title = entry_title
+ 	# new_entry.Content = entry_content
+ 	# new_entry.Category = entry_category 와 같은 코드이다.
+	try:
+		new_entry.save()
+	except:
+		return HttpResponse('글 생성 중 오류.')
+ 	# 1차 저장 완료
+
+ 	# tag가 존재하는 경우 태그까지 2차 저장
+	for tag in tag_list:
+ 		new_entry.Tags.add(tag)
+	if len(tag_list) > 0:
+		try:
+			new_entry.save()
+		except:
+			return HttpResponse('글 생성 중 오류.')
+	# 2차 저장 완료
+
+	# 성공 안내 메시지
+	return HttpResponse('%s번 글을 제대로 써넣었습니다.' % new_entry.id)
+
+def add_comment(request):
+	pass
+	
